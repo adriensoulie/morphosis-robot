@@ -38,9 +38,10 @@ function App() {
     const robotInCartCondition = (robot) => robot.name === clickedRobot.name;
     const isRobotAlreadyInCart = cartRobots.some(robotInCartCondition)
     
-    cartRobots.length === 5 && !isRobotAlreadyInCart ?
+    if ( cartRobots.length >= 5 && !isRobotAlreadyInCart ){ 
       alert("You Can Only Have 5 Differents Robots in Cart Not More !")
-    :
+    } else if ( cartRobots.length <= 5 ){ 
+      console.log("set state robots / cart")
       setRobots(
         prev => {
             return { data: prev.data.map(robot => 
@@ -62,6 +63,7 @@ function App() {
         }
         return [...prev, { ...clickedRobot, amount: 1}];
       });
+    }
   };
 
   const getTotalRobots = ( robots ) =>
