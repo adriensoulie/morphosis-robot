@@ -35,10 +35,22 @@ function App() {
   }, [])
 
   const handleAddToCart = ( clickedRobot ) => {
-
-    cartRobots.length > 4 ? 
+    const robotInCartCondition = (robot) => robot.name === clickedRobot.name;
+    const isRobotAlreadyInCart = cartRobots.some(robotInCartCondition)
+    
+    cartRobots.length === 5 && !isRobotAlreadyInCart ?
       alert("You Can Only Have 5 Differents Robots in Cart Not More !")
-    : 
+    :
+      setRobots(
+        prev => {
+            return { data: prev.data.map(robot => 
+              robot.name === clickedRobot.name 
+              ? {...robot, stock: robot.stock - 1}
+              : robot
+            )}
+          }
+      )
+
       setCartRobots(prev => {
         const isRobotInCart = prev.find(robot => robot.name === clickedRobot.name);
         if (isRobotInCart) {
@@ -50,16 +62,6 @@ function App() {
         }
         return [...prev, { ...clickedRobot, amount: 1}];
       });
-
-      setRobots(
-        prev => {
-            return { data: prev.data.map(robot => 
-              robot.name === clickedRobot.name 
-              ? {...robot, stock: robot.stock - 1}
-              : robot
-            )}
-          }
-      )
   };
 
   const getTotalRobots = ( robots ) =>
